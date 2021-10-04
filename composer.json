@@ -1,6 +1,6 @@
 {
     "name": "aimtoget/smeplug-php",
-    "version": "0.0.2",
+    "version": "0.0.3",
     "description": "SME Plug API Wrapper for PHP",
     "type": "library",
     "authors": [
