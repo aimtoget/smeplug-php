@@ -50,14 +50,16 @@ class SmePlug
      * @param string $network_id
      * @param string $plan_id
      * @param string $phone
+     * @param string|null $customer_reference
      * @return object Response data
      */
-    public function purchaseDataPlan(string $network_id, string $plan_id, string $phone): object
+    public function purchaseDataPlan(string $network_id, string $plan_id, string $phone, ?string $customer_reference = null): object
     {
         $payload = array(
             'network_id' => $network_id,
             'plan_id' => $plan_id,
-            'phone' => $phone
+            'phone' => $phone,
+            'customer_reference' => $customer_reference
         );
 
         $response = $this->request('POST', '/data/purchase', $payload);
@@ -70,14 +72,17 @@ class SmePlug
      * @param string $network_id
      * @param float $amount
      * @param string $phone
+     * @param string|null $customer_reference
+     * 
      * @return object Response Object
      */
-    public function purchaseAirtime(string $network_id, float $amount, string $phone): object
+    public function purchaseAirtime(string $network_id, float $amount, string $phone, ?string $customer_reference = null): object
     {
         $payload = array(
             'network_id' => $network_id,
             'amount' => $amount,
-            'phone' => $phone
+            'phone' => $phone,
+            'customer_reference' => $customer_reference
         );
 
         $response = $this->request('POST', '/airtime/purchase', $payload);
@@ -119,15 +124,18 @@ class SmePlug
      * @param string $account_number
      * @param float $amount
      * @param string|null $description
+     * @param string|null $customer_reference
+     * 
      * @return object
      */
-    public function bankTransfer(string $bank_code, string $account_number, float $amount, ?string $description = null): object
+    public function bankTransfer(string $bank_code, string $account_number, float $amount, ?string $description = null, ?string $customer_reference = null): object
     {
         $payload = array(
             'bank_code' => $bank_code,
             'account_number' => $account_number,
             'amount' => $amount,
-            'description' => $description
+            'description' => $description,
+            'customer_reference' => $customer_reference
         );
 
         $response = $this->request('POST', '/transfer/send', $payload);
@@ -158,6 +166,7 @@ class SmePlug
                 RequestOptions::JSON => $payload
             ]);
         } catch (Exception $e) {
+            echo $e->getMessage();
             throw new RequestException('Request failed');
         }
 
