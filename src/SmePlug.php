@@ -51,15 +51,17 @@ class SmePlug
      * @param string $plan_id
      * @param string $phone
      * @param string|null $customer_reference
+     * @param bool $async
      * @return object Response data
      */
-    public function purchaseDataPlan(string $network_id, string $plan_id, string $phone, ?string $customer_reference = null): object
+    public function purchaseDataPlan(string $network_id, string $plan_id, string $phone, ?string $customer_reference = null, bool $async = false): object
     {
         $payload = array(
             'network_id' => $network_id,
             'plan_id' => $plan_id,
             'phone' => $phone,
-            'customer_reference' => $customer_reference
+            'customer_reference' => $customer_reference,
+            'async' => $async
         );
 
         $response = $this->request('POST', '/data/purchase', $payload);
