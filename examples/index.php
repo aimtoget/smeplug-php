@@ -1,5 +1,7 @@
 <?php
 
+use SmePlug\Exceptions\RequestException;
+use SmePlug\Exceptions\ResponseException;
 use SmePlug\SmePlug;
 
 require_once '../vendor/autoload.php';
@@ -16,11 +18,15 @@ $smeplug = new SmePlug($key);
 //$purchase_data = $smeplug->purchaseDataPlan('1', '500', 'XXXXXXXXX');
 //var_dump($purchase_data);
 
-//$purchase_airtime = $smeplug->purchaseAirtime('1', 50, 'XXXXXXXXX');
+/* try {
+    $purchase_airtime = $smeplug->purchaseAirtime('1', 50, 'XXXXXXXXX');
+} catch(RequestException | ResponseException $e) {
+    echo $e;
+} */
 //var_dump($purchase_airtime);
 
-//$banks = $smeplug->getTransferBanksList();
-//var_dump($banks);
+$banks = $smeplug->getTransferBanksList();
+var_dump($banks);
 
 //$details = $smeplug->resolveAccountDetails('000007', 'XXXXXXXXX');
 //var_dump($details);
