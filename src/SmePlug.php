@@ -168,7 +168,6 @@ class SmePlug
                 RequestOptions::JSON => $payload
             ]);
         } catch (Exception $e) {
-            echo $e->getMessage();
             throw new RequestException('Request failed');
         }
 
