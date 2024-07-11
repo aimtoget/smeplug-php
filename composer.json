@@ -1,17 +1,17 @@
 {
-    "name": "aimtoget/smeplug-php",
-    "version": "0.0.6",
-    "description": "SME Plug API Wrapper for PHP",
-    "type": "library",
-    "authors": [
-        {
-            "name": "Salawu Oluwadamilola Ezekiel",
-            "email": "damilolaoffical@gmail.com"
-        }
-    ],
-    "autoload": {
-        "psr-4": {
-            "SmePlug\\": "src/"
-        }
+  "name": "aimtoget/smeplug-php",
+  "version": "0.0.7",
+  "description": "SME Plug API Wrapper for PHP",
+  "type": "library",
+  "authors": [
+    {
+      "name": "Salawu Oluwadamilola Ezekiel",
+      "email": "damilolaoffical@gmail.com"
     }
+  ],
+  "autoload": {
+    "psr-4": {
+      "SmePlug\\": "src/"
+    }
+  }
 }
