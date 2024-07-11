@@ -7,11 +7,12 @@ use GuzzleHttp\Client;
 use GuzzleHttp\RequestOptions;
 use SmePlug\Exceptions\RequestException;
 use SmePlug\Exceptions\ResponseException;
+use SmePlug\Exceptions\TimeoutException;
 
 class SmePlug
 {
     private $base_uri = 'https://smeplug.ng/api/v1';
-    
+
     /**
      * API Key
      *
@@ -152,32 +153,48 @@ class SmePlug
      * @param array|null $payload
      * @return object
      */
-    private function request(string $method, string $endpoint, ?array $payload = null)
+    private function request(string $method, string $endpoint, array $payload = [])
     {
         $uri = $this->base_uri . $endpoint;
-        $client = new Client([
-            'timeout' => 50000,
-            RequestOptions::HEADERS => array(
-                'Content-type' => 'application/json',
-                'Authorization' => 'Bearer ' . $this->key
+        $is_get = strtoupper($method) === 'GET';
+
+        if ($is_get && count($payload)) {
+            $uri .= '?' . http_build_query($payload);
+        }
+
+        $ch = curl_init();
+        $opts = array(
+            CURLOPT_URL => $uri,
+            CURLOPT_TIMEOUT => 50,
+            CURLOPT_CONNECTTIMEOUT => 50,
+            CURLOPT_RETURNTRANSFER => true,
+            CURLOPT_FOLLOWLOCATION => true,
+            CURLOPT_HTTPHEADER => array(
+                'Content-type: application/json',
+                'Authorization: Bearer ' . $this->key,
+                'Accept: */*',
             )
-        ]);
+        );
 
-        try {
-            $response = $client->request($method, $uri, [
-                RequestOptions::JSON => $payload
-            ]);
-        } catch (Exception $e) {
-            throw new RequestException('Request failed');
+        if (!$is_get) {
+            $opts[CURLOPT_CUSTOMREQUEST] = $method;
+            $opts[CURLOPT_POSTFIELDS] = json_encode($payload);
         }
 
-        $content = $response->getBody()->getContents();
-        $data = json_decode($content);
+        curl_setopt_array($ch, $opts);
+        $data = curl_exec($ch);
+        $status_code = curl_getinfo($ch, CURLINFO_HTTP_CODE);
+        $error_no = curl_errno($ch);
+        curl_close($ch);
 
-        if(!$data->status) {
-            throw new ResponseException($data->msg);
+        if ($error_no == 28) {
+            throw new TimeoutException('Service timed out');
         }
-        
-        return $data;
+
+        if ($status_code >= 200 && $status_code <= 299) {
+            return json_decode($data);
+        }
+
+        throw new ResponseException($data);
     }
 }
