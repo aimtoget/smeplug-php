@@ -9,9 +9,6 @@
             "email": "damilolaoffical@gmail.com"
         }
     ],
-    "require": {
-        "guzzlehttp/guzzle": "^7.4|^6.3"
-    },
     "autoload": {
         "psr-4": {
             "SmePlug\\": "src/"
