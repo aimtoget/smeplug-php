@@ -146,6 +146,41 @@ class SmePlug
     }
 
     /**
+     * Retrieve phone numbers
+     *
+     * @return array
+     */
+    public function getAllPhones()
+    {
+        $response = $this->request('GET', '/phone-numbers');
+        return $response;
+    }
+
+    /**
+     * Get phone
+     *
+     * @param string $phone_id
+     * @return float
+     */
+    public function getPhone(string $phone_id): mixed
+    {
+        $response = $this->request('GET', "/phone-numbers/{$phone_id}");
+        return $response;
+    }
+
+    /**
+     * Get phone airtime balance
+     *
+     * @param string $phone_id
+     * @return float
+     */
+    public function getPhoneAirtimeBalance(string $phone_id): float
+    {
+        $response = $this->request('GET', "/phone-numbers/{$phone_id}/airtime-balance");
+        return $response->balance;
+    }
+
+    /**
      * Make request
      *
      * @param string $method
