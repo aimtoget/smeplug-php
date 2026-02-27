@@ -169,6 +169,18 @@ class SmePlug
     }
 
     /**
+     * Get transaction
+     *
+     * @param string $reference
+     * @return float
+     */
+    public function getTransaction(string $reference): mixed
+    {
+        $response = $this->request('GET', "/transactions/{$reference}");
+        return $response;
+    }
+
+    /**
      * Get phone airtime balance
      *
      * @param string $phone_id
